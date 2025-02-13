@@ -15,10 +15,10 @@
     <div th:each="el : ${post}" class="alert alert-info mt-2">
         <h3 th:text="${el.title}"></h3>
         <p th:text="${el.full_text}"></p>
-        <a th:href="'/blog/'+${el.id}+'/edit'" class="btn btn-success">Редактировать</a>
-        <a th:href="'/blog/'+${el.id}+'/remove'" class="btn btn-danger">Удалить</a>
-<!--        <a th:href="/blog/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a>-->
-<!--        <a th:href="'/blog/' + ${el.id} + '/remove'" class="btn btn-warning">Удалить</a>-->
+        <a th:href="'/blog/'+${el.id}+'/edit'" class="btn btn-success">Редактировать</a><br><br>
+        <form th:action="'/blog/'+${el.id}+'/remove'" method="post">
+            <button class="btn btn-danger" type="submit">Удалить</button>
+        </form>
     </div>
 </div>
 
