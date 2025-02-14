@@ -1,7 +1,9 @@
 package com.JavaSpringBoot.MyProject.Controllers;
 
 import com.JavaSpringBoot.MyProject.Models.Post;
+import com.JavaSpringBoot.MyProject.Models.User;
 import com.JavaSpringBoot.MyProject.Repositories.PostRepository;
+import com.JavaSpringBoot.MyProject.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,8 @@ public class BlogController {
 
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/blog")
     public String blogMain(Model model) {
@@ -76,9 +80,18 @@ public class BlogController {
         return "redirect:/blog";
     }
 
+    @GetMapping("/blog/registration")
+    public String blogRegistration(Model model) {return "registration";}
+
+    @PostMapping("/blog/registration")
+    public String blogPostRegistration(@RequestParam String email,@RequestParam String password, Model model){
+        User user = new User(email,password);
+        userRepository.save(user);
+        return "redirect:/authorization";
+    }
+
     @GetMapping("/blog/authorization")
     public String blogAuthorization(Model model) {
         return "authorization";
     }
-
 }
