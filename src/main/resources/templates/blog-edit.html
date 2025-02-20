@@ -14,6 +14,7 @@
     <h1>Редактирование</h1>
     <div th:each="el: ${post}">
     <form method="post">
+<!--        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
         <input type="text" th:value="${el.title}" name="title" placeholder="Введите название статьи" class="form-control"><br>
 <!--        <input type="text" th:value="${el.anons}" name="anons" placeholder="Введите анонс статьи" class="form-control"><br>-->
         <textarea name="full_text" placeholder="Введите полный текст статьи" class="form-control" th:text="${el.full_text}"/><br>
