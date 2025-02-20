@@ -15,20 +15,6 @@
 	<name>MyProject</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-
-	<developers>
-		<developer/>
-	</developers>
-
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 
 	<properties>
 		<java.version>21</java.version>
@@ -73,6 +59,11 @@
 			<scope>runtime</scope>
 		</dependency>
 
+<!--		spring security-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

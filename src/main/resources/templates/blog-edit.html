@@ -11,19 +11,15 @@
 <!--//вставка из header.html-->
 
 <div class="container mt-5 mb-5">
-    <h1>Редактирование статьи</h1>
+    <h1>Редактирование</h1>
     <div th:each="el: ${post}">
     <form method="post">
         <input type="text" th:value="${el.title}" name="title" placeholder="Введите название статьи" class="form-control"><br>
-        <input type="text" th:value="${el.anons}" name="anons" placeholder="Введите анонс статьи" class="form-control"><br>
+<!--        <input type="text" th:value="${el.anons}" name="anons" placeholder="Введите анонс статьи" class="form-control"><br>-->
         <textarea name="full_text" placeholder="Введите полный текст статьи" class="form-control" th:text="${el.full_text}"/><br>
         <button type="submit" class="btn btn-success">Обновить</button>
     </form>
     </div>
 </div>
-
-<div th:insert="blocks/footer :: footer"></div>
-<!--//вставка из footer.html-->
-
 </body>
 </html>

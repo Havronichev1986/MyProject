@@ -3,21 +3,20 @@ package com.JavaSpringBoot.MyProject.Models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Post")
+@Table(name = "Purchase")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String anons;
     private String full_text;
 
     public Post() {
     }
 
-    public Post(String title, String anons, String full_text) {
+    public Post(String title, String full_text) {
         this.title = title;
-        this.anons = anons;
+
         this.full_text = full_text;
     }
 
@@ -35,14 +34,6 @@ public class Post {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getAnons() {
-        return anons;
-    }
-
-    public void setAnons(String anons) {
-        this.anons = anons;
     }
 
     public String getFull_text() {
