@@ -2,11 +2,12 @@ package com.JavaSpringBoot.MyProject.Repositories;
 
 import com.JavaSpringBoot.MyProject.Models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByName (String username);
+    User findByUsername(String username) throws UsernameNotFoundException;
 }

@@ -1,6 +1,8 @@
 package com.JavaSpringBoot.MyProject.Config;
 
-
+import com.JavaSpringBoot.MyProject.Repositories.UserRepository;
+import com.JavaSpringBoot.MyProject.Services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -15,18 +17,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @EnableMethodSecurity
 @EnableWebSecurity
 @Configuration
 public class SpringSecurityConfig {
-
-
-//    public UserDetailsService userDetailsService(){return new MyUserDetailsService();};
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder(5);
-//    }
+    @Autowired
+    private UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -38,15 +34,23 @@ public class SpringSecurityConfig {
                         .requestMatchers("/**")
                         .authenticated())
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-
                 .build();
     }
-//    @Bean
-//    public AuthenticationProvider authenticationProvider(){
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setUserDetailsService(userDetailsService());
-//        provider.setPasswordEncoder(passwordEncoder());
-//        return provider;
-//    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserService(userRepository, bCryptPasswordEncoder());
+    }
+    @Bean
+    public DaoAuthenticationProvider authenticationManager() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder());
+        authProvider.setUserDetailsService(userDetailsService());
+        return authProvider;
+    }
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }
