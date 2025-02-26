@@ -18,6 +18,7 @@ public class RegistrationController {
     public RegistrationController(UserService userService) {
         this.userService = userService;
     }
+
     @GetMapping
     public String showRegPage() {
         return "registration";

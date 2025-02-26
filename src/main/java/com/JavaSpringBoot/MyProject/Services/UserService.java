@@ -29,16 +29,7 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
-//    public boolean saveUser(User user) {
-//        if(loadUserByUsername(user.getUsername()) != null) {
-//            return false;
-//        }
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-//        user.setRole("ROLE_USER");
-//        userRepository.save(user);
-//        System.out.println("SAVE USER METHOD");
-//        return true;
-//    }
+
     public boolean saveUser(User user) {
 
         User userFromDB = userRepository.findByUsername(user.getUsername());
