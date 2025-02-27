@@ -26,25 +26,13 @@ public class SpringSecurityConfig {
     @Autowired
     private UserRepository userRepository;
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-//        return http
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .cors(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(auth -> auth.requestMatchers("/home")
-//                        .permitAll()
-//                        .requestMatchers("/**")
-//                        .authenticated())
-//                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-//                .build();
-//    }
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests((request)->request
                     .requestMatchers("/home","/registration","/login")
-                    .permitAll()// Разрешить доступ к /home всем
+                    .permitAll()// Разрешить доступ к /home,/registration и /login всем
                     .anyRequest()
                     .authenticated())// Все остальные запросы требуют аутентификации
             .formLogin((form)->form
@@ -54,7 +42,6 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             .logout(LogoutConfigurer::permitAll);// Разрешить доступ к выходу всем
     return http.build();
 }
-
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserService(userRepository, bCryptPasswordEncoder());

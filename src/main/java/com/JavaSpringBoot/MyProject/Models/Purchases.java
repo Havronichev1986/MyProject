@@ -2,25 +2,31 @@ package com.JavaSpringBoot.MyProject.Models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.NonNull;
+
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "Purchase")
 @NoArgsConstructor
-public class Purchases {
+public class Purchases implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String full_text;
+    private Long userId;
 
-    public Purchases(String title, String full_text)
+    public Long getId() {return id;}
+    public void setId(Long id) {this.id = id;}
+
+    public Purchases(String title, String full_text, Long userId)
     {
         this.title = title;
         this.full_text = full_text;
+        this.userId = userId;
     }
 
     public String getFull_text() {

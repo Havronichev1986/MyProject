@@ -8,54 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-//@Entity
-//@Table(name = "t_user")
-//public class User {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//    private String name;
-//    private String password;
-//    private String role;
-//
-//    public String getRole() {
-//        return role;
-//    }
-//    public void setRole(String role) {
-//        this.role = role;
-//    }
-//
-//    public User( String password, String name) {
-//        this.password = password;
-//        this.name = name;
-//    }
-//
-//    public User() {}
-//
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String email) {
-//        this.name = name;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-//}
 
 @Entity
 @Data
@@ -64,26 +16,26 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String username;
     private String password;
     private String role;
+
+    @OneToMany
+    @JoinColumn(name = "userId")
+    private List<Purchases>purchases;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public User() {
-
-    }
+    public User() {}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
         return List.of(grantedAuthority);
     }
-
 
     @Override
     public boolean isAccountNonExpired() {return true;}
@@ -118,6 +70,13 @@ public class User implements UserDetails {
 
     public void setRole(String role) {
         this.role = role;
+    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
 

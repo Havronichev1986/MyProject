@@ -6,10 +6,14 @@ import com.JavaSpringBoot.MyProject.Repositories.PurchaseRepository;
 import com.JavaSpringBoot.MyProject.Repositories.UserRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -20,33 +24,41 @@ public class BlogController {
     private PurchaseRepository postRepository;
     @Autowired
     private UserRepository userRepository;
+
     @GetMapping("/blog")
-    public String blogMain(Model model) {
-        Iterable<Purchases> purchases = postRepository.findAll();
+    public String blogMain(Model model, Principal principal) throws UserPrincipalNotFoundException {
+        String currentUsername = principal.getName();// Получаем текущего пользователя
+        User currentUser = userRepository.findByUsername(currentUsername);// Находим пользователя в базе данных
+        Iterable<Purchases> purchases = postRepository.findByUserId(currentUser.getId());// Получаем покупки текущего пользователя
+//      Iterable<Purchases> purchases = postRepository.findAll();// показать продукты всех пользователей
         model.addAttribute("purchases", purchases);
         return "blog-main";
     }
+
     @GetMapping("/blog/add")
     public String blogAdd(Model model) {
         return "blog-add";
     }
     @PostMapping("/blog/add")
-    public String blogPostAdd(@RequestParam String title,@RequestParam String full_text, Model model){
-        Purchases purchase = new Purchases(title,full_text);
+    public String blogPostAdd(@RequestParam String title,
+                              @RequestParam String full_text,
+                              Principal principal,//получение текущего пользователя
+                              Model model){
+        Long userId = null;
+        if (principal!= null){
+            // Получаем имя пользователя
+            String username = principal.getName();
+
+            // Получаем пользователя из базы данных по имени
+            User user = userRepository.findByUsername(username);
+            if (user != null) {
+                userId = user.getId();
+            }
+        }
+        Purchases purchase = new Purchases(title,full_text,userId);
         postRepository.save(purchase);
         return "redirect:/blog";
     }
-//    @GetMapping("/blog/{id}")
-//    public String blogDetails(@PathVariable(value = "id") long id, Model model) {
-//        if (!postRepository.existsById(id)){
-//            return "blog";
-//        }
-//        Optional<Purchases> purchase = postRepository.findById(id);
-//        ArrayList<Purchases> res = new ArrayList<>();
-//        purchase.ifPresent(res::add);
-//        model.addAttribute("purchase", res);
-//        return "blog-details";
-//    }
     @GetMapping("/blog/{id}/edit")
     public String blogEdit(@PathVariable(value = "id") long id, Model model) {
         if (!postRepository.existsById(id)){
@@ -72,7 +84,6 @@ public class BlogController {
         postRepository.delete(post);
         return "redirect:/blog";
     }
-
     @GetMapping("/login")
     public String blogAuthorization(Model model) {
         return "login";
