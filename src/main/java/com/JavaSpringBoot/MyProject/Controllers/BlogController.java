@@ -6,8 +6,6 @@ import com.JavaSpringBoot.MyProject.Repositories.PurchaseRepository;
 import com.JavaSpringBoot.MyProject.Repositories.UserRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -84,8 +82,14 @@ public class BlogController {
         postRepository.delete(post);
         return "redirect:/blog";
     }
+
+
+
     @GetMapping("/login")
     public String blogAuthorization(Model model) {
         return "login";
     }
+
+
+
 }
